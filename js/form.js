@@ -3,37 +3,42 @@ document.querySelector("#adicionar-paciente")
         event.preventDefault();
 
         var formAdiciona = document.querySelector("#form-adiciona");
+        var patient = getPatient(formAdiciona);
 
-        var nome = formAdiciona.nome.value;
-        var peso = formAdiciona.peso.value;
-
-        if(isWeightValid(peso)){
+        if(isWeightValid(patient.peso)){
             alert("Peso inválido !");
             return;
         }
 
-        var altura = formAdiciona.altura.value;
-        
-        if(isStatureValid(altura)){
+        if(isStatureValid(patient.altura)){
             alert("Altura inválida !");
             return;
         }
-
-        var gordura = formAdiciona.gordura.value;
-
-        var tabelaPacientes = document.querySelector("#tabela-pacientes");
-
+        
         var pacienteTr = document.createElement("tr");
         pacienteTr.classList.add("paciente");
-
-        pacienteTr.appendChild(createElementTd(nome, "info-nome"));
-        pacienteTr.appendChild(createElementTd(peso, "info-peso"));
-        pacienteTr.appendChild(createElementTd(altura, "info-altura"));
-        pacienteTr.appendChild(createElementTd(gordura, "info-gordura"));
+        
+        pacienteTr.appendChild(createElementTd(patient.nome, "info-nome"));
+        pacienteTr.appendChild(createElementTd(patient.peso, "info-peso"));
+        pacienteTr.appendChild(createElementTd(patient.altura, "info-altura"));
+        pacienteTr.appendChild(createElementTd(patient.gordura, "info-gordura"));
         pacienteTr.appendChild(createElementTd(estimateImc(peso, altura), "info-imc"));
-
+        
+        var tabelaPacientes = document.querySelector("#tabela-pacientes");
         tabelaPacientes.appendChild(pacienteTr);
 });
+
+function getPatient(form){
+    var patient = {
+        nome: form.nome.value,
+        peso: form.peso.value,
+        altura: form.altura.value,
+        gordura: form.gordura.value,
+        imc: form.imc.value
+    };
+
+    return patient;
+}
 
 function isStatureValid(altura) {
     return altura <= 0 || altura >= 3;
